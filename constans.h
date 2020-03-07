@@ -1,0 +1,32 @@
+#pragma once
+
+#define DEFAULT_CD_MIN 1
+#define DEFAULT_CD_MAX 100
+
+#define DEFAULT_CF_MIN 1
+#define DEFAULT_CF_MAX 50
+
+#define DEFAULT_CM_MIN 1
+#define DEFAULT_CM_MAX 30
+
+#define DEFAULT_UD_MIN 50
+#define DEFAULT_UD_MAX 100
+
+#define DEFAULT_UF_MIN 200
+#define DEFAULT_UF_MAX 300
+
+#define DEFAULT_UM_MIN 100
+#define DEFAULT_UM_MAX 150
+
+#define DEFAULT_SD_MIN 100
+#define DEFAULT_SD_MAX 1000
+
+#define DEFAULT_XD_MAX 10000
+#define DEFAULT_XF_MAX 10000
+#define DEFAULT_XM_MAX 10000
+
+#define NUMBER_OF_INDIVIDUALS 50
+#define CROSSP 0.6
+#define MUTATION_FACTOR 0.8
+
+

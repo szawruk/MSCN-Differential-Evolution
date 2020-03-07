@@ -1,0 +1,170 @@
+// lista9.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include "pch.h"
+#include "CMscnProblem.h"
+#include "CMscnSolution.h"
+#include "CRandomSearch.h"
+#include "Individual.h"
+#include "CDiffEvol.h"
+#include "CProblem.h"
+#include "COptimizer.h"
+#include "CTimer.h"
+
+void test(string testPath, string solutionPath)
+{
+	cout << "Plik problemu: " + testPath + ", Plik rozwiazania: " + solutionPath << endl;
+
+	CMscnProblem problem;
+
+	double * solution;
+	int errorCode = 0;
+	bool constraintsSatisfied;
+
+	problem.deserialize(testPath);
+	solution = problem.makeDoubleArraySolutionFromFile(solutionPath);
+	testPath.size();
+	problem.serialize(testPath.substr(0,testPath.size()-4) + "_zapis.txt");
+	
+	cout << "Zysk: " << problem.dGetQuality(solution, problem.getSizeSolutionFromFile(solutionPath), errorCode) << ", Kod bledu: " << errorCode <<endl;
+
+	constraintsSatisfied = problem.bConstraintsSatisfied(solution, problem.getSizeSolutionFromFile(solutionPath), errorCode);
+
+	cout << "Rozwiazanie poprawne: "; constraintsSatisfied ? cout<< "true" : cout<< "false"; cout << ", Kod bledu: " << errorCode << endl;
+}
+
+
+
+void testSolutionObject(string testPath, string solutionPath)
+{
+	cout << "Plik problemu: " + testPath + ", Plik rozwiazania: " + solutionPath << endl;
+
+	CMscnProblem problem;
+
+	int errorCode = 0;
+	bool constraintsSatisfied;
+
+	problem.deserialize(testPath);
+
+	CMscnSolution solutionObject;
+	solutionObject.readSolutionFromFile(solutionPath);
+
+	problem.serialize(testPath.substr(0, testPath.size() - 4) + "_zapis.txt");
+
+	cout << "Zysk: " << problem.dGetQuality(solutionObject.convertSolutionObjectIntoDoubleArray(), solutionObject.getSize(), errorCode) << ", Kod bledu: " << errorCode << endl;
+
+	constraintsSatisfied = problem.bConstraintsSatisfied(solutionObject.convertSolutionObjectIntoDoubleArray(), solutionObject.getSize(), errorCode);
+
+	cout << "Rozwiazanie poprawne: "; constraintsSatisfied ? cout << "true" : cout << "false"; cout << ", Kod bledu: " << errorCode << endl;
+	
+}
+
+void randomProblemGenerateTest(string randomProblemPath, int D, int F, int M, int S)
+{
+	cout << "Plik problemu wygenerowany automatycznie i zapisany do: " + randomProblemPath << endl;
+
+	CMscnProblem problem;
+	problem.vGenerateInstance(D,F,M,S);
+	problem.serialize(randomProblemPath);
+	
+}
+
+void RandomSearchTest(string randomProblemPath, string randomSolutionPath, int duration)  //test wyszukiwania losowego
+{
+	cout << "Losowanie najlepszego rozwiazania: "<< endl;
+
+	CMscnProblem problem;
+	problem.deserialize(randomProblemPath);
+
+	CRandomSearch randomSearch(&problem);
+	
+
+	randomSearch.getBestSolution(duration, randomSolutionPath);
+}
+
+void testRandom() //test randomowego losowania liczb calkowitych i rzeczywistych
+{
+	cout << "Random Test:\n\n";
+
+	CRandom random;
+
+	cout << "Zwracam sto intow od -5 do 10"<<endl;
+
+	for (int i = 0; i < 100; i++) 
+	{
+		cout << random.getInt(-5, 10) << " ";
+	}
+
+	cout << endl << "Zwracam sto doubli od 1 do 10" << endl;
+	for (int i = 0; i < 100; i++)
+	{
+		cout << random.getDouble(1, 10) << " ";
+	}
+	
+}
+
+void DifferentialEvolutionTest(string randomProblemPath, string evolutionSolutionPath, int duration)  //test ewolucji roznicowej
+{
+	cout << "Ewolucja roznicowa: " << endl;
+
+
+	CMscnProblem  problem;
+	problem.deserialize(randomProblemPath);
+
+	
+	CDiffEvol evolution(&problem);
+
+	evolution.getBestSolution(duration, evolutionSolutionPath);
+	
+
+}
+
+int main()
+{
+	
+	test("test1.txt","solution1.txt");
+
+	cout << endl << endl;
+
+	test("test2.txt", "solution2.txt");
+
+	cout << endl << endl;
+
+	test("test3.txt", "solution3.txt");	
+
+	cout << endl << endl;
+
+	test("SuperPlik.txt", "randomSuperPlik.txt");
+
+	cout << endl << endl;
+
+	testSolutionObject("garolTest.txt", "garolSolution.txt");
+
+	cout << endl <<endl;
+
+	testSolutionObject("mojTest.txt", "mojSolution.txt");
+
+	cout << endl << endl;
+
+	//randomProblemGenerateTest("randomProblem1.txt", 10, 5, 4, 4);  //randomowo generuje problem
+
+	cout << endl << endl;
+
+	
+	RandomSearchTest("SuperPlik.txt", "randomSuperPlik.txt",5);  //random search test
+
+	cout << endl << endl;
+
+<<<<<<< HEAD
+	DifferentialEvolutionTest("SuperPlik.txt", "EvolutionSuperPlik.txt", 5);
+=======
+	DifferentialEvolutionTest("SuperPlik.txt", "EvolutionSuperPlik.txt", 5);  // ewolucja roznicowa test
+>>>>>>> ac7091571161f8f7775802976ba1bac3f42068dd
+
+	cout << endl << endl;
+	
+		
+	
+	
+}
+
